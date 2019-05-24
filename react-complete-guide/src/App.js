@@ -8,7 +8,8 @@ state = {
   persons: [
     { name: 'Person One'},
     { name: 'Person Two'}
-  ]
+  ],
+  showPersons: false
 }
 
 //used as an event handler
@@ -28,6 +29,12 @@ switchNameHandler = (newName) => {
       {name: event.target.value}
     ]});
   }
+
+  //use arrow function so you can use "this" keyword to ALWAYS refer to the class
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+  }
   render() {
     const style = {
       backgroundColor: 'white',
@@ -35,8 +42,16 @@ switchNameHandler = (newName) => {
       border: '1x solid blue',
       padding: '8px'
     };
+
     return (
       <div className="App">
+        <button 
+        style={style}
+        onClick={() => this.switchNameHandler("Name!!")}>Switch Name</button>
+        <button 
+        style={style}
+        onClick={() => this.togglePersonsHandler()}>Hide People</button>
+        { this.state.showPersons ? <div>
         <Person
           name={this.state.persons[0].name}
           click={this.switchNameHandler.bind(this, "Name!")}/>
@@ -44,9 +59,8 @@ switchNameHandler = (newName) => {
           name={this.state.persons[1].name}
           click={this.switchNameHandler.bind(this, "Name!")}
           changed={this.nameChangedHandler}>Hello</Person>
-        <button 
-        style={style}
-        onClick={() => this.switchNameHandler("Name!!")}>Switch Name</button>
+        </div> : null}
+
       </div>
     );
           }
